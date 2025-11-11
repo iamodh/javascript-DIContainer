@@ -1,4 +1,5 @@
 import LottoController from './controllers/LottoController.js';
+import DIContainer from './DIContainer.js';
 import Calculator from './models/services/Calculator.js';
 import Checker from './models/services/Checker.js';
 import LottoFactory from './models/services/LottoFactory.js';
@@ -6,19 +7,22 @@ import InputView from './views/InputView.js';
 import OutputView from './views/OutputView.js';
 class App {
   async run() {
-    const inputView = new InputView();
-    const outputView = new OutputView();
-    const checker = new Checker();
-    const calculator = new Calculator();
-    const lottoFactory = new LottoFactory();
+    const container = new DIContainer();
+    container.register('inputView', InputView);
+    container.register('outputView', OutputView);
+    container.register('checker', Checker);
+    container.register('calculator', Calculator);
+    container.register('lottoFactory', LottoFactory);
 
-    const controller = new LottoController(
-      inputView,
-      outputView,
-      checker,
-      calculator,
-      lottoFactory
-    );
+    container.register('lottoController', LottoController, [
+      'inputView',
+      'outputView',
+      'checker',
+      'calculator',
+      'lottoFactory',
+    ]);
+
+    const controller = container.resolve('lottoController');
     await controller.start();
   }
 }
