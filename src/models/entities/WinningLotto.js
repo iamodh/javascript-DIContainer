@@ -2,7 +2,7 @@ import ERROR_MESSAGES from '../../constants/errorMessages.js';
 import LOTTO_CONFIG from '../../constants/lottoConfig.js';
 
 class WinningLotto {
-  #winningNumbers;
+  #numbers;
   #bonusNumber;
 
   constructor(numbers, bonusNumber) {
@@ -10,7 +10,7 @@ class WinningLotto {
     this.#validateNumbersDuplicates(numbers);
     this.#validateBonusNumberDuplicates(numbers, bonusNumber);
 
-    this.#winningNumbers = numbers;
+    this.#numbers = numbers;
     this.#bonusNumber = bonusNumber;
   }
 
@@ -33,17 +33,20 @@ class WinningLotto {
     }
   }
 
-  calculateMatchCount(lottoNumbers) {
-    const totalCounts = this.#winningNumbers.length + lottoNumbers.length;
+  calculateRank(lotto) {
+    const matchCount = lotto.matchCount(this.#numbers);
+    const hasBonus = lotto.contains(this.#bonusNumber);
 
-    const unionCounts = new Set([...this.#winningNumbers, ...lottoNumbers])
-      .size;
-
-    return totalCounts - unionCounts;
+    return this.#determineRank(matchCount, hasBonus);
   }
 
-  calculateBonusMatch(lottoNumbers) {
-    return lottoNumbers.includes(this.#bonusNumber);
+  #determineRank(matchCount, hasBonus) {
+    if (matchCount === 6) return 'FIRST';
+    if (matchCount === 5 && hasBonus) return 'SECOND';
+    if (matchCount === 5) return 'THIRD';
+    if (matchCount === 4) return 'FOURTH';
+    if (matchCount === 3) return 'FIFTH';
+    else return 'NONE';
   }
 }
 
