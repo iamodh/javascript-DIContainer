@@ -1,4 +1,4 @@
-import DIContainer from '../src/Container';
+import DIContainer from '../src/DIContainer';
 
 describe('DI컨테이너 클래스 테스트', () => {
   describe('register 메서드 테스트', () => {
@@ -29,6 +29,30 @@ describe('DI컨테이너 클래스 테스트', () => {
       const SERVICE_NAME = 'noService';
 
       expect(() => container.resolve(SERVICE_NAME)).toThrow('[ERROR]');
+    });
+
+    test('의존성을 가지고 있다면 생성자에 주입한 후 인스턴스를 생성한다.', () => {
+      const container = new DIContainer();
+
+      const SERVICE_NAME = 'mockService';
+      const DEPENDENCY_NAME = 'mockDependency';
+
+      class MockDependency {}
+
+      class MockService {
+        dependency;
+        constructor(dependency) {
+          this.dependency = dependency;
+        }
+      }
+
+      container.register(DEPENDENCY_NAME, MockDependency);
+      container.register(SERVICE_NAME, MockService, [DEPENDENCY_NAME]);
+
+      const instance = container.resolve(SERVICE_NAME);
+
+      expect(instance).toBeInstanceOf(MockService);
+      expect(instance.dependency).toBeInstanceOf(MockDependency);
     });
   });
 });
