@@ -20,7 +20,7 @@ describe('로또 클래스 테스트', () => {
     expect(lotto.contains(BONUS_NUMBER)).toBe(true);
   });
 
-  test('당첨 로또 번호와 일치하는 번호의 개수를 반환한다', () => {
+  test('당첨 로또 번호와 일치하는 번호의 개수를 반환한다.', () => {
     const lotto = new Lotto([1, 2, 3, 4, 5, 6]);
     const winningNumbers = [1, 2, 3, 4, 5, 7];
 
