@@ -24,7 +24,7 @@ class OutputView {
   }
 
   printProfitRate(profitRate) {
-    Console.print(`총 수익률은 ${profitRate}%입니다.`);
+    Console.print(`총 수익률은 ${profitRate.toLocaleString()}%입니다.`);
   }
 
   printError(error) {
