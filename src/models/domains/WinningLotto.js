@@ -1,7 +1,7 @@
 import {
   ERROR_MESSAGES,
   getInvalidCountMessage,
-} from '../../constants/errorMessages';
+} from '../../constants/errorMessages.js';
 
 class WinningLotto {
   #lottoConfig;

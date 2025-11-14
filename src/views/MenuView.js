@@ -1,5 +1,5 @@
 import { Console } from '@woowacourse/mission-utils';
-import MENU_OPTIONS from '../constants/menuOptions';
+import MENU_OPTIONS from '../constants/menuOptions.js';
 
 class MenuView {
   async getOption(state) {

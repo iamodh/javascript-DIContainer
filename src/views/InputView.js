@@ -3,7 +3,7 @@ import {
   ERROR_MESSAGES,
   getInvalidPricaMessage,
   getNumberNotInRangeMessage,
-} from '../constants/errorMessages';
+} from '../constants/errorMessages.js';
 
 class InputView {
   #lottoConfig;
