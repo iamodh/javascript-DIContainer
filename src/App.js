@@ -1,41 +1,33 @@
-import FIXED_NUMBERS from './constants/fixedNumbers.js';
 import LottoController from './controllers/LottoController.js';
 import DIContainer from './DIContainer.js';
 import LottoConfig from './models/configs/LottoConfig.js';
 import PrizeConfig from './models/configs/PrizeConfig.js';
 import LottoMachine from './models/domains/LottoMachine.js';
-import FixedStrategy from './models/domains/strategies/FixedStrategy.js';
 import RandomStrategy from './models/domains/strategies/RandomStrategy.js';
 import LottoChecker from './models/services/LottoChecker.js';
 import InputView from './views/InputView.js';
 import OutputView from './views/OutputView.js';
 
 class App {
-  async run(env) {
+  async run() {
     const container = new DIContainer();
 
-    container.register('lottoConfig', LottoConfig);
-    container.register('prizeConfig', PrizeConfig);
+    container.register('lottoConfig', LottoConfig, 'singleton');
+    container.register('prizeConfig', PrizeConfig, 'singleton');
 
-    container.register('inputView', InputView, ['lottoConfig']);
-    container.register('outputView', OutputView, ['prizeConfig']);
+    container.register('inputView', InputView, 'singleton', ['lottoConfig']);
+    container.register('outputView', OutputView, 'singleton', ['prizeConfig']);
 
-    if (env === 'dev') {
-      container.register('fixedStrategy', FixedStrategy, [FIXED_NUMBERS]);
-      container.register('lottoMachine', LottoMachine, [
-        'lottoConfig',
-        'fixedStrategy',
-      ]);
-    } else {
-      container.register('randomStrategy', RandomStrategy, ['lottoConfig']);
-      container.register('lottoMachine', LottoMachine, [
-        'lottoConfig',
-        'randomStrategy',
-      ]);
-    }
+    container.register('randomStrategy', RandomStrategy, 'singleton', [
+      'lottoConfig',
+    ]);
+    container.register('lottoMachine', LottoMachine, 'transient', [
+      'lottoConfig',
+      'randomStrategy',
+    ]);
 
-    container.register('lottoChecker', LottoChecker);
-    container.register('lottoController', LottoController, [
+    container.register('lottoChecker', LottoChecker, 'singleton');
+    container.register('lottoController', LottoController, 'transient', [
       'lottoConfig',
       'prizeConfig',
       'inputView',

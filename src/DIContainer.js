@@ -1,8 +1,13 @@
 class DIContainer {
   #services = new Map();
 
-  register(serviceName, serviceDefinition, args = []) {
-    this.#services.set(serviceName, { serviceDefinition, args });
+  register(serviceName, serviceDefinition, scope = 'transient', args = []) {
+    this.#services.set(serviceName, {
+      serviceDefinition,
+      scope,
+      args,
+      instance: null,
+    });
   }
 
   resolve(serviceName) {
@@ -12,20 +17,35 @@ class DIContainer {
       throw new Error(`[ERROR] ${serviceName}이 존재하지 않습니다.`);
     }
 
-    const resolved = [];
+    if (service.scope === 'transient') {
+      const resolved = [];
 
-    // 의존성은 반드시 register가 되어 있어야 함
-    service.args.map((arg) => {
-      if (this.#services.has(arg)) {
-        // 의존성인 경우
-        resolved.push(this.resolve(arg));
-      } else {
-        // 일반 값인 경우
-        resolved.push(arg);
+      service.args.map((arg) => {
+        if (this.#services.has(arg)) {
+          resolved.push(this.resolve(arg));
+        } else {
+          resolved.push(arg);
+        }
+      });
+
+      return new service.serviceDefinition(...resolved);
+    }
+
+    if (service.scope === 'singleton') {
+      if (!service.instance) {
+        const resolved = [];
+        service.args.map((arg) => {
+          if (this.#services.has(arg)) {
+            resolved.push(this.resolve(arg));
+          } else {
+            resolved.push(arg);
+          }
+        });
+
+        service.instance = new service.serviceDefinition(...resolved);
       }
-    });
-
-    return new service.serviceDefinition(...resolved);
+      return service.instance;
+    }
   }
 
   hasService(serviceName) {

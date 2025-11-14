@@ -8,7 +8,7 @@ describe('DI컨테이너 클래스 테스트', () => {
       const SERVICE_NAME = 'mockService';
       class MockService {}
 
-      container.register(SERVICE_NAME, MockService);
+      container.register(SERVICE_NAME, MockService, 'transient');
       expect(container.hasService(SERVICE_NAME)).toBe(true);
     });
   });
@@ -19,7 +19,7 @@ describe('DI컨테이너 클래스 테스트', () => {
       const SERVICE_NAME = 'mockService';
       class MockService {}
 
-      container.register(SERVICE_NAME, MockService);
+      container.register(SERVICE_NAME, MockService, 'transient');
 
       expect(container.resolve(SERVICE_NAME)).toBeInstanceOf(MockService);
     });
@@ -46,8 +46,10 @@ describe('DI컨테이너 클래스 테스트', () => {
         }
       }
 
-      container.register(DEPENDENCY_NAME, MockDependency);
-      container.register(SERVICE_NAME, MockService, [DEPENDENCY_NAME]);
+      container.register(DEPENDENCY_NAME, MockDependency, 'transient');
+      container.register(SERVICE_NAME, MockService, 'transient', [
+        DEPENDENCY_NAME,
+      ]);
 
       const instance = container.resolve(SERVICE_NAME);
 
@@ -73,11 +75,38 @@ describe('DI컨테이너 클래스 테스트', () => {
       }
     }
 
-    container.register(DEPENDENCY_NAME, MockDependency);
-    container.register(SERVICE_NAME, MockService, [1, 2, DEPENDENCY_NAME]);
+    container.register(DEPENDENCY_NAME, MockDependency, 'transient');
+    container.register(SERVICE_NAME, MockService, 'transient', [
+      1,
+      2,
+      DEPENDENCY_NAME,
+    ]);
     const instance = container.resolve(SERVICE_NAME);
     expect(instance).toBeInstanceOf(MockService);
     expect(instance.value1).toBe(1);
     expect(instance.dependency).toBeInstanceOf(MockDependency);
+  });
+
+  test('singleton 키워드로 register된 서비스는 하나만 존재해야 한다.', () => {
+    const container = new DIContainer();
+
+    const SERVICE_NAME = 'mockService';
+    class MockService {}
+
+    container.register(SERVICE_NAME, MockService, 'singleton');
+
+    const CLIENT_NAME = 'mockClient';
+    class MockClient {
+      service;
+      constructor(service) {
+        this.service = service;
+      }
+    }
+
+    container.register(CLIENT_NAME, MockClient, 'transient', [SERVICE_NAME]);
+    const clientA = container.resolve(CLIENT_NAME);
+    const clientB = container.resolve(CLIENT_NAME);
+
+    expect(clientA.service === clientB.service).toBe(true);
   });
 });
