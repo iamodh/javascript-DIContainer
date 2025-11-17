@@ -32,7 +32,7 @@ class OutputView {
   }
 
   printError(error) {
-    Console.print(error);
+    Console.print(error + '\n');
   }
 
   printNewLine() {

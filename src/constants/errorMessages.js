@@ -4,6 +4,9 @@ export const ERROR_MESSAGES = Object.freeze({
   NUMBERS_DUPLICATES: `${ERROR_PREFIX} 로또 번호는 중복되는 숫자를 가지면 안 됩니다.`,
   BONUS_NUMBER_DUPLICATES: `${ERROR_PREFIX} 보너스 번호는 당첨 번호와 중복되면 안 됩니다.`,
   NUMBER_NOT_POSITIVE: `${ERROR_PREFIX} 입력 값이 0보다 큰 양수가 아닙니다.`,
+  MENU_STATE_INVALID: `${ERROR_PREFIX} 존재하지 않는 메뉴 상태입니다.`,
+  MENU_OPTION_INVALID: `${ERROR_PREFIX} 존재하지 않는 메뉴 옵셥입니다.`,
+  SETTING_VALUE_INVALID: `${ERROR_PREFIX} 설정 값 형식이 맞지 않습니다.`,
 });
 
 export function getInvalidCountMessage(count) {
