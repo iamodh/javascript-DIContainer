@@ -28,24 +28,13 @@ git checkout gameconfig
 
 ```
 ## 설계 구조
-<table><thead>
-  <tr>
-    <th>객체지향설계, DI 컨테이너 적용 전</th>
-    <th>객체지향설계, DI 컨테이너 적용 후</th>
-  </tr></thead>
-<tbody>
-  <tr>
-    <td>
-      
-<img width="1055" height="931" alt="image" src="https://github.com/user-attachments/assets/6fe58c45-af5f-4c4f-8204-f6d549cf27d2" />
-    </td>
-    <td>
-    
-<img width="1098" height="843" alt="image" src="https://github.com/user-attachments/assets/d29c6736-4ae4-446c-9764-06e1c67f6dcb" />
-    </td>
-  </tr>
-</tbody>
-</table>
+### 객체지향설계, DI 컨테이너 적용 전
+<img width="640" alt="image" src="https://github.com/user-attachments/assets/6fe58c45-af5f-4c4f-8204-f6d549cf27d2" />
+
+### 객체지향설계, DI 컨테이너 적용 후
+
+<img width="640" alt="image" src="https://github.com/user-attachments/assets/d29c6736-4ae4-446c-9764-06e1c67f6dcb" />
+
 
 
 
